@@ -1,0 +1,101 @@
+<html>
+<!-- Day 21 3 Nov 2022 -->
+
+<head>
+    <title>Day 21 3 Nov 2022 - calculator with js</title>
+    <!-- JOC: Just some general inline css, body is the only tag used here on this page -->
+    <style type="text/css">
+        body {
+            background-color: brown;
+        }
+        #mydiv {
+            color: aqua;
+        }
+        .sp1 {
+            background-color: yellow;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>SFD04 Calculator</h1>
+<!-- JOC: Set up the input boxes for the 1st and 2nd numbers that we will do some maths with.
+Give them an id='xyz' so we can identify them later from the javascript (i.e. get their data, or update them)
+-->
+    FIRST NUMBER: <input type="text" id="fnum"><br>
+    SECOND NUMBER: <input type="text" id="snum"><br>
+    <!-- JOC: Now on the HTML page, make a select box with a few maths operator options (e.g. MUL for multiply).
+    The actual option sent will be in the value="XYZ" statement e.g value="MUL".
+    In that case, "MUL" will get sent to the onclick= function (f1() in this case) for identifying the
+    right function to run on the data.
+    So...when you click the selection dropdown, the browser page will call the function f1 (with no arguments)
+    but it WILL see what you selected in the option e.g. MUL because it's going to do a .getElementById method
+    on it AND the browser rendered this page before the javascript runs (ie. the code will know about the id's)
+-->
+<!-- JOC: When the user clicks, run the function f1() which will pick up the page values, and do a calculation.-->
+    CHOOSE OPERATION: <select id="operation" onclick="f1()">
+        <option value="MUL">MUL</option>
+        <option value="SUB">SUB</option>
+        <option value="ADD">ADD</option>
+        <option value="MOD">MOD</option>
+    </select><br>
+    <!-- JOC: The id='result' identifies what the javascript will later update with the .getElemendById method
+    That's why you need an id=xxx - so you can communicate back to the HTML and know where to put the result
+-->
+    RESULT <input type="text" id="result">
+
+    <!-- JOC: Now for the script - note this code must appear AFTER the id= tags have been rendered by the
+        browser. If you put this javascript BEFORE the HTML is rendered (e.g in the head section of page),
+    it won't know how to find the id's, and will just keep displaying the page without any
+    calculations from f1().
+
+    This is THE important reason for keeping any Javascript that operates on the HTML page below the page HTML!
+    The browser needs to set up the HTML with its id="xxx" before you can update any HTML tags via javascript.
+-->
+    <script type="text/javascript">
+        // Now we are in javascript, comments are an // not a <!-- comment --> (they are for HTML only)
+
+        // Define a function called f1 that takes no parameters, as it's going to update the HTML directly
+        // via getElementByID. Just using the standard function definition syntax, not the other two more
+        // complex ones we saw today (assign a variable to a function, or use an indirect =>. 
+        // They have their uses but not important yet.
+        function f1() {
+            // First we get the tag elements for the two numbers from the HTML page above
+            // Remember - they MUST be above (and rendered by the browser already),
+            // or we won't know about them here! It's OK, this code is below their rendering, so this script
+            // will find them fine.
+            let a = document.getElementById("fnum").value;
+            let b = document.getElementById("snum").value;
+            // Let's see which option the user selected when they clicked the dropdown.
+            // The selected value (e.g MUL) is now in the op variable in this function.
+            let op = document.getElementById("operation").value;
+            // Let's test what the user selected by examining what's in 'op' variable we discovered in the
+            // previous line.
+            if (op == 'MUL') {
+                // Oh, it was 'MUL', so let's multiply the a and b variables we got from the page.
+                // Don't forget to always parseInt (or parseFloat) for numbers, or javascript will
+                // just default to thinking of them as text (so + will just concatenate a string, 
+                // not what we want.)
+                // If we saw 'MUL' in option - multiply operator maths.
+                document.getElementById("result").value = parseInt(a) * parseInt(b);
+            }
+            // OK, now keep checking to see if the option selected instead was SUB, ADD, MOD etc.
+            // Key point: after running this code, we have told the browser to update the
+            // element with the id='result' with the result from the calculation.
+            // We did this by setting the .value to a new calculated value.
+            if (op == 'SUB') {
+                // Update the id='result' tag with the result of subtraction....
+                document.getElementById("result").value = parseInt(a) - parseInt(b);
+            }
+            if (op == 'ADD') {
+                // ... etc. for add.
+                document.getElementById("result").value = parseInt(a) + parseInt(b);
+            }      
+            if (op == 'MOD') {
+                document.getElementById("result").value = parseInt(a) % parseInt(b);
+            }      
+        }
+    </script>
+</body>
